@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: lab5-chat-dev
+
+resources:
+  - ../../base
+  - secret.yaml
+
+patches:
+  - path: patch-statefulset.yaml
+
+commonLabels:
+  environment: dev

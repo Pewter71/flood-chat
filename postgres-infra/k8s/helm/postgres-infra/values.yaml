@@ -1,0 +1,32 @@
+
+fullnameOverride: postgres
+
+image:
+  repository: postgres
+  tag: "16-alpine"
+  pullPolicy: IfNotPresent
+
+auth:
+  username: chat
+  database: chat
+
+password: "changeme"
+
+persistence:
+  enabled: true
+  size: 2Gi
+  storageClass: ""
+
+service:
+  port: 5432
+
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 100m
+  limits:
+    memory: 512Mi
+    cpu: 500m
+
+podLabels: {}
+podAnnotations: {}

@@ -1,0 +1,21 @@
+
+backend:
+  replicas: 2
+  resources:
+    requests:
+      memory: 128Mi
+      cpu: 200m
+    limits:
+      memory: 512Mi
+      cpu: 1000m
+
+frontend:
+  replicas: 1
+
+config:
+  corsOrigin: "http://localhost:30080"
+  maxMessages: "100"
+  nodeEnv: "production"
+
+database:
+  url: "postgresql://chat:REPLACE_ME_VIA_CI@postgres-0.postgres.lab5-chat-dev.svc.cluster.local:5432/chat?sslmode=disable"

@@ -1,0 +1,43 @@
+
+backend:
+  image:
+    repository: localhost:5000/chat-app-backend
+    tag: latest
+    pullPolicy: IfNotPresent
+  replicas: 1
+  port: 3001
+  observability:
+    enabled: false
+    otlpEndpoint: ""
+    serviceName: "chat-backend"
+  resources:
+    requests:
+      memory: 64Mi
+      cpu: 100m
+    limits:
+      memory: 256Mi
+      cpu: 500m
+
+frontend:
+  image:
+    repository: localhost:5000/chat-app-frontend
+    tag: latest
+    pullPolicy: IfNotPresent
+  replicas: 1
+  port: 80
+  nodePort: 30080
+  resources:
+    requests:
+      memory: 16Mi
+      cpu: 25m
+    limits:
+      memory: 64Mi
+      cpu: 100m
+
+config:
+  corsOrigin: "http://localhost:30080"
+  maxMessages: "50"
+  nodeEnv: "production"
+
+database:
+  url: "postgresql://chat:chat@postgres-0.postgres:5432/chat?sslmode=disable"

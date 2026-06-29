@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chat-config
+data:
+  CORS_ORIGIN: "http://localhost:30080"
+  NODE_ENV: "production"
+  MAX_MESSAGES: "100"

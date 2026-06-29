@@ -1,0 +1,25 @@
+
+
+backend:
+  replicas: 1
+  observability:
+    enabled: true
+    otlpEndpoint: "http://tempo.observability.svc.cluster.local:4318"
+    serviceName: "chat-backend"
+  resources:
+    requests:
+      memory: 64Mi
+      cpu: 100m
+    limits:
+      memory: 256Mi
+      cpu: 500m
+
+frontend:
+  replicas: 1
+
+config:
+  corsOrigin: "http://localhost:30080"
+  nodeEnv: "development"
+
+database:
+  url: "postgresql://chat:chat@postgres-0.postgres:5432/chat?sslmode=disable"

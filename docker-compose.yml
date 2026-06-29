@@ -1,0 +1,73 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ${COMPOSE_PROJECT_NAME:-chat}-postgres
+    environment:
+      - POSTGRES_USER=chat
+      - POSTGRES_PASSWORD=chat
+      - POSTGRES_DB=chat
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U chat -d chat"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      target: production
+    container_name: ${COMPOSE_PROJECT_NAME:-chat}-backend
+    environment:
+      - PORT=3001
+      - DATABASE_URL=postgresql://chat:chat@postgres:5432/chat
+      - CORS_ORIGIN=http://localhost
+      - MAX_MESSAGES=50
+      - NODE_ENV=production
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  frontend:
+    build:
+      context: ./frontend
+      target: production
+      args:
+        VITE_SOCKET_URL: http://localhost
+    container_name: ${COMPOSE_PROJECT_NAME:-chat}-frontend
+    ports:
+      - "80:80"
+    networks:
+      - frontend
+    depends_on:
+      - backend
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  backend:
+    driver: bridge
+    internal: true
+  frontend:
+    driver: bridge

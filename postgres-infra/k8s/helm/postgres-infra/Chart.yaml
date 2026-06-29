@@ -1,0 +1,6 @@
+apiVersion: v2
+name: postgres-infra
+description: PostgreSQL infrastructure for chat-app
+type: application
+version: 1.0.0
+appVersion: "16"

@@ -1,0 +1,20 @@
+
+
+password: "REPLACE_ME_VIA_CI"
+
+persistence:
+  size: 5Gi
+
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 200m
+  limits:
+    memory: 768Mi
+    cpu: 1000m
+
+podLabels:
+  environment: prod
+
+podAnnotations:
+  backup.policy: "daily"
